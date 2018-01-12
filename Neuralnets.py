@@ -71,3 +71,34 @@ print('I have m = %d training examples!' % (m))
 # Before building a full neural network, lets first see how logistic regression performs on this problem. You can use sklearn's built-in functions to do that. Run the code below to train a logistic regression classifier on the dataset.
 
 # In[56]:
+
+
+# Train the logistic regression classifier
+clf = sklearn.linear_model.LogisticRegressionCV();
+clf.fit(X.T, Y.T);
+
+# You can now plot the decision boundary of these models. Run the code below.
+
+# In[57]:
+
+# Plot the decision boundary for logistic regression
+plot_decision_boundary(lambda x: clf.predict(x), X, Y)
+plt.title("Logistic Regression")
+
+# Print accuracy
+LR_predictions = clf.predict(X.T)
+print('Accuracy of logistic regression: %d ' % float(
+    (np.dot(Y, LR_predictions) + np.dot(1 - Y, 1 - LR_predictions)) / float(Y.size) * 100) +
+      '% ' + "(percentage of correctly labelled datapoints)")
+
+
+# **Expected Output**:
+#
+# <table style="width:20%">
+#   <tr>
+#     <td>**Accuracy**</td>
+#     <td> 47% </td>
+#   </tr>
+#
+# </table>
+#
