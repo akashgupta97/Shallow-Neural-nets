@@ -102,3 +102,75 @@ print('Accuracy of logistic regression: %d ' % float(
 #
 # </table>
 #
+# **Interpretation**: The dataset is not linearly separable, so logistic regression doesn't perform well. Hopefully a neural network will do better. Let's try this now!
+
+# ## 4 - Neural Network model
+#
+# Logistic regression did not work well on the "flower dataset". You are going to train a Neural Network with a single hidden layer.
+#
+# **Here is our model**:
+# <img src="images/classification_kiank.png" style="width:600px;height:300px;">
+#
+# **Mathematically**:
+#
+# For one example $x^{(i)}$:
+# $$z^{[1] (i)} =  W^{[1]} x^{(i)} + b^{[1] (i)}\tag{1}$$
+# $$a^{[1] (i)} = \tanh(z^{[1] (i)})\tag{2}$$
+# $$z^{[2] (i)} = W^{[2]} a^{[1] (i)} + b^{[2] (i)}\tag{3}$$
+# $$\hat{y}^{(i)} = a^{[2] (i)} = \sigma(z^{ [2] (i)})\tag{4}$$
+# $$y^{(i)}_{prediction} = \begin{cases} 1 & \mbox{if } a^{[2](i)} > 0.5 \\ 0 & \mbox{otherwise } \end{cases}\tag{5}$$
+#
+# Given the predictions on all the examples, you can also compute the cost $J$ as follows:
+# $$J = - \frac{1}{m} \sum\limits_{i = 0}^{m} \large\left(\small y^{(i)}\log\left(a^{[2] (i)}\right) + (1-y^{(i)})\log\left(1- a^{[2] (i)}\right)  \large  \right) \small \tag{6}$$
+#
+# **Reminder**: The general methodology to build a Neural Network is to:
+#     1. Define the neural network structure ( # of input units,  # of hidden units, etc).
+#     2. Initialize the model's parameters
+#     3. Loop:
+#         - Implement forward propagation
+#         - Compute loss
+#         - Implement backward propagation to get the gradients
+#         - Update parameters (gradient descent)
+#
+# You often build helper functions to compute steps 1-3 and then merge them into one function we call `nn_model()`. Once you've built `nn_model()` and learnt the right parameters, you can make predictions on new data.
+
+# ### 4.1 - Defining the neural network structure ####
+#
+# **Exercise**: Define three variables:
+#     - n_x: the size of the input layer
+#     - n_h: the size of the hidden layer (set this to 4)
+#     - n_y: the size of the output layer
+#
+# **Hint**: Use shapes of X and Y to find n_x and n_y. Also, hard code the hidden layer size to be 4.
+
+# In[58]:
+
+# GRADED FUNCTION: layer_sizes
+
+def layer_sizes(X, Y):
+    """
+    Arguments:
+    X -- input dataset of shape (input size, number of examples)
+    Y -- labels of shape (output size, number of examples)
+
+    Returns:
+    n_x -- the size of the input layer
+    n_h -- the size of the hidden layer
+    n_y -- the size of the output layer
+    """
+    ### START CODE HERE ### (≈ 3 lines of code)
+    n_x = X.shape[0]  # size of input layer
+    n_h = 4
+    n_y = Y.shape[0]  # size of output layer
+    ### END CODE HERE ###
+    return (n_x, n_h, n_y)
+
+
+# In[59]:
+
+X_assess, Y_assess = layer_sizes_test_case()
+(n_x, n_h, n_y) = layer_sizes(X_assess, Y_assess)
+print("The size of the input layer is: n_x = " + str(n_x))
+print("The size of the hidden layer is: n_h = " + str(n_h))
+print("The size of the output layer is: n_y = " + str(n_y))
+
