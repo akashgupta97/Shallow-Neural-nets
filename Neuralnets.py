@@ -244,3 +244,82 @@ print("b1 = " + str(parameters["b1"]))
 print("W2 = " + str(parameters["W2"]))
 print("b2 = " + str(parameters["b2"]))
 
+
+# **Expected Output**:
+#
+# <table style="width:90%">
+#   <tr>
+#     <td>**W1**</td>
+#     <td> [[-0.00416758 -0.00056267]
+#  [-0.02136196  0.01640271]
+#  [-0.01793436 -0.00841747]
+#  [ 0.00502881 -0.01245288]] </td>
+#   </tr>
+#
+#   <tr>
+#     <td>**b1**</td>
+#     <td> [[ 0.]
+#  [ 0.]
+#  [ 0.]
+#  [ 0.]] </td>
+#   </tr>
+#
+#   <tr>
+#     <td>**W2**</td>
+#     <td> [[-0.01057952 -0.00909008  0.00551454  0.02292208]]</td>
+#   </tr>
+#
+#
+#   <tr>
+#     <td>**b2**</td>
+#     <td> [[ 0.]] </td>
+#   </tr>
+#
+# </table>
+#
+#
+
+def forward_propagation(X, parameters):
+    """
+    Argument:
+    X -- input data of size (n_x, m)
+    parameters -- python dictionary containing your parameters (output of initialization function)
+
+    Returns:
+    A2 -- The sigmoid output of the second activation
+    cache -- a dictionary containing "Z1", "A1", "Z2" and "A2"
+    """
+    # Retrieve each parameter from the dictionary "parameters"
+    ### START CODE HERE ### (≈ 4 lines of code)
+    W1 = parameters["W1"]
+    b1 = parameters["b1"]
+    W2 = parameters["W2"]
+    b2 = parameters["b2"]
+    ### END CODE HERE ###
+
+    # Implement Forward Propagation to calculate A2 (probabilities)
+    ### START CODE HERE ### (≈ 4 lines of code)
+    Z1 = np.dot(W1, X) + b1
+    A1 = np.tanh(Z1)
+    Z2 = np.dot(W2, A1) + b2
+    A2 = sigmoid(Z2)
+    ### END CODE HERE ###
+
+    assert (A2.shape == (1, X.shape[1]))
+
+    cache = {"Z1": Z1,
+             "A1": A1,
+             "Z2": Z2,
+             "A2": A2}
+
+    return A2, cache
+
+
+# In[71]:
+
+X_assess, parameters = forward_propagation_test_case()
+
+A2, cache = forward_propagation(X_assess, parameters)
+
+# Note: we use the mean here just to make sure that your output matches ours.
+print(np.mean(cache['Z1']), np.mean(cache['A1']), np.mean(cache['Z2']), np.mean(cache['A2']))
