@@ -323,3 +323,47 @@ A2, cache = forward_propagation(X_assess, parameters)
 
 # Note: we use the mean here just to make sure that your output matches ours.
 print(np.mean(cache['Z1']), np.mean(cache['A1']), np.mean(cache['Z2']), np.mean(cache['A2']))
+# **Expected Output**:
+# <table style="width:55%">
+#   <tr>
+#     <td> -0.000499755777742 -0.000496963353232 0.000438187450959 0.500109546852 </td>
+#   </tr>
+# </table>
+
+# Now that you have computed $A^{[2]}$ (in the Python variable "`A2`"), which contains $a^{[2](i)}$ for every example, you can compute the cost function as follows:
+#
+# $$J = - \frac{1}{m} \sum\limits_{i = 0}^{m} \large{(} \small y^{(i)}\log\left(a^{[2] (i)}\right) + (1-y^{(i)})\log\left(1- a^{[2] (i)}\right) \large{)} \small\tag{13}$$
+#
+def compute_cost(A2, Y, parameters):
+    """
+    Computes the cross-entropy cost given in equation (13)
+
+    Arguments:
+    A2 -- The sigmoid output of the second activation, of shape (1, number of examples)
+    Y -- "true" labels vector of shape (1, number of examples)
+    parameters -- python dictionary containing your parameters W1, b1, W2 and b2
+
+    Returns:
+    cost -- cross-entropy cost given equation (13)
+    """
+
+    m = Y.shape[1]  # number of example
+
+    # Compute the cross-entropy cost
+    ### START CODE HERE ### (≈ 2 lines of code)
+    logprobs = np.multiply(np.log(A2), Y) + np.multiply(np.log(1 - A2), 1 - Y)
+    cost = - np.sum(logprobs) * (1 / m)
+    ### END CODE HERE ###
+
+    cost = np.squeeze(cost)  # makes sure cost is the dimension we expect.
+    # E.g., turns [[17]] into 17
+    assert (isinstance(cost, float))
+
+    return cost
+
+
+# In[73]:
+
+A2, Y_assess, parameters = compute_cost_test_case()
+
+print("cost = " + str(compute_cost(A2, Y_assess, parameters)))
