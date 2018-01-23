@@ -657,4 +657,141 @@ print("b1 = " + str(parameters["b1"]))
 print("W2 = " + str(parameters["W2"]))
 print("b2 = " + str(parameters["b2"]))
 
+# GRADED FUNCTION: nn_model
+# **Expected Output**:
+#
+# <table style="width:90%">
+#   <tr>
+#     <td>**W1**</td>
+#     <td> [[-4.18494056  5.33220609]
+#  [-7.52989382  1.24306181]
+#  [-4.1929459   5.32632331]
+#  [ 7.52983719 -1.24309422]]</td>
+#   </tr>
+#
+#   <tr>
+#     <td>**b1**</td>
+#     <td> [[ 2.32926819]
+#  [ 3.79458998]
+#  [ 2.33002577]
+#  [-3.79468846]]</td>
+#   </tr>
+#
+#   <tr>
+#     <td>**W2**</td>
+#     <td> [[-6033.83672146 -6008.12980822 -6033.10095287  6008.06637269]] </td>
+#   </tr>
+#
+#
+#   <tr>
+#     <td>**b2**</td>
+#     <td> [[-52.66607724]] </td>
+#   </tr>
+#
+# </table>
+
+# ### 4.5 Predictions
+#
+# **Question**: Use your model to predict by building predict().
+# Use forward propagation to predict results.
+#
+# **Reminder**: predictions = $y_{prediction} = \mathbb 1 \text{{activation > 0.5}} = \begin{cases}
+#       1 & \text{if}\ activation > 0.5 \\
+#       0 & \text{otherwise}
+#     \end{cases}$
+#
+# As an example, if you would like to set the entries of a matrix X to 0 and 1 based on a threshold you would do: ```X_new = (X > threshold)```
+
+# In[80]:
+
+# GRADED FUNCTION: predict
+
+def predict(parameters, X):
+    """
+    Using the learned parameters, predicts a class for each example in X
+
+    Arguments:
+    parameters -- python dictionary containing your parameters
+    X -- input data of size (n_x, m)
+
+    Returns
+    predictions -- vector of predictions of our model (red: 0 / blue: 1)
+    """
+
+    # Computes probabilities using forward propagation, and classifies to 0/1 using 0.5 as the threshold.
+    ### START CODE HERE ### (≈ 2 lines of code)
+    A2, cache = forward_propagation(X, parameters)
+    predictions = (A2 > 0.5)
+    ### END CODE HERE ###
+
+    return predictions
+
+
+# In[81]:
+
+parameters, X_assess = predict_test_case()
+
+predictions = predict(parameters, X_assess)
+print("predictions mean = " + str(np.mean(predictions)))
+
+# **Expected Output**:
+#
+#
+# <table style="width:40%">
+#   <tr>
+#     <td>**predictions mean**</td>
+#     <td> 0.666666666667 </td>
+#   </tr>
+#
+# </table>
+
+# It is time to run the model and see how it performs on a planar dataset. Run the following code to test your model with a single hidden layer of $n_h$ hidden units.
+
+# In[82]:
+
+# Build a model with a n_h-dimensional hidden layer
+parameters = nn_model(X, Y, n_h=4, num_iterations=10000, print_cost=True)
+
+# Plot the decision boundary
+plot_decision_boundary(lambda x: predict(parameters, x.T), X, Y)
+plt.title("Decision Boundary for hidden layer size " + str(4))
+
+# **Expected Output**:
+#
+# <table style="width:40%">
+#   <tr>
+#     <td>**Cost after iteration 9000**</td>
+#     <td> 0.218607 </td>
+#   </tr>
+#
+# </table>
+#
+
+# In[83]:
+
+# Print accuracy
+predictions = predict(parameters, X)
+print('Accuracy: %d' % float((np.dot(Y, predictions.T) + np.dot(1 - Y, 1 - predictions.T)) / float(Y.size) * 100) + '%')
+
+# **Expected Output**:
+#
+# <table style="width:15%">
+#   <tr>
+#     <td>**Accuracy**</td>
+#     <td> 90% </td>
+#   </tr>
+# </table>
+
+# Accuracy is really high compared to Logistic Regression. The model has learnt the leaf patterns of the flower! Neural networks are able to learn even highly non-linear decision boundaries, unlike logistic regression.
+#
+# Now, let's try out several hidden layer sizes.
+
+# ### 4.6 - Tuning hidden layer size (optional/ungraded exercise) ###
+#
+# Run the following code. It may take 1-2 minutes. You will observe different behaviors of the model for various hidden layer sizes.
+
+# In[84]:
+
+# This may take about 2 minutes to run
+
 
